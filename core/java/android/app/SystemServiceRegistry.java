@@ -48,8 +48,10 @@ import android.content.pm.ShortcutManager;
 import android.content.res.Resources;
 import android.hardware.ConsumerIrManager;
 import android.hardware.ISerialManager;
+import android.hardware.II2CManager;
 import android.hardware.SensorManager;
 import android.hardware.SerialManager;
+import android.hardware.I2CManager;
 import android.hardware.SystemSensorManager;
 import android.hardware.camera2.CameraManager;
 import android.hardware.display.DisplayManager;
@@ -572,6 +574,14 @@ final class SystemServiceRegistry {
             public SerialManager createService(ContextImpl ctx) throws ServiceNotFoundException {
                 IBinder b = ServiceManager.getServiceOrThrow(Context.SERIAL_SERVICE);
                 return new SerialManager(ctx, ISerialManager.Stub.asInterface(b));
+            }});
+
+        registerService(Context.I2C_SERVICE, I2CManager.class,
+                new CachedServiceFetcher<I2CManager>() {
+            @Override
+            public I2CManager createService(ContextImpl ctx) throws ServiceNotFoundException {
+                IBinder b = ServiceManager.getServiceOrThrow(Context.I2C_SERVICE);
+                return new I2CManager(ctx, II2CManager.Stub.asInterface(b));
             }});
 
         registerService(Context.VIBRATOR_SERVICE, Vibrator.class,

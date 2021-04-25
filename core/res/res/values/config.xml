@@ -1053,6 +1053,17 @@
          for example, /dev/ttyUSB0
     -->
     <string-array translatable="false" name="config_serialPorts">
+    	<item>/dev/ttyUSB0</item>
+	<item>/dev/ttyACM0</item>
+	<item>/dev/ttyS0</item>
+	<item>/dev/ttyS1</item>
+    </string-array>
+    <!-- List of paths to I2C busses that are available to the I2C manager.
+         for example, /dev/ttyUSB0
+    -->
+    <string-array translatable="false" name="config_I2CPorts">
+    	<item>/dev/i2c-3</item>
+	<item>/dev/i2c-4</item>
     </string-array>
 
     <!-- Vibrator pattern for feedback about a long screen/key press -->

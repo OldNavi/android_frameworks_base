@@ -3026,6 +3026,7 @@ public abstract class Context {
             //@hide: SIP_SERVICE,
             USB_SERVICE,
             LAUNCHER_APPS_SERVICE,
+            I2C_SERVICE,
             //@hide: SERIAL_SERVICE,
             //@hide: HDMI_CONTROL_SERVICE,
             INPUT_SERVICE,
@@ -3893,6 +3894,17 @@ public abstract class Context {
      * @hide
      */
     public static final String SERIAL_SERVICE = "serial";
+
+    /**
+     * Use with {@link #getSystemService(String)} to retrieve a {@link
+     * android.hardware.I2CManager} for access to serial ports.
+     *
+     * @see #getSystemService(String)
+     * @see android.hardware.SerialManager
+     *
+     * @hide
+     */
+    public static final String I2C_SERVICE = "i2c";
 
     /**
      * Use with {@link #getSystemService(String)} to retrieve a

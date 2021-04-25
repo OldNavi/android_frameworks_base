@@ -33,6 +33,7 @@ int register_android_server_LightsService(JNIEnv* env);
 int register_android_server_PowerManagerService(JNIEnv* env);
 int register_android_server_storage_AppFuse(JNIEnv* env);
 int register_android_server_SerialService(JNIEnv* env);
+int register_android_server_I2CService(JNIEnv* env);
 int register_android_server_SystemServer(JNIEnv* env);
 int register_android_server_UsbAlsaJackDetector(JNIEnv* env);
 int register_android_server_UsbDeviceManager(JNIEnv* env);
@@ -76,6 +77,7 @@ extern "C" jint JNI_OnLoad(JavaVM* vm, void* /* reserved */)
     register_android_server_broadcastradio_Tuner(vm, env);
     register_android_server_PowerManagerService(env);
     register_android_server_SerialService(env);
+    register_android_server_I2CService(env);
     register_android_server_InputApplicationHandle(env);
     register_android_server_InputWindowHandle(env);
     register_android_server_InputManager(env);

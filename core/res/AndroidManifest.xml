@@ -3562,6 +3562,10 @@
          @hide -->
     <permission android:name="android.permission.SERIAL_PORT"
         android:protectionLevel="signature|privileged" />
+    <!-- @SystemApi Allows applications to access I2C ports via the I2CManager.
+         @hide -->
+    <permission android:name="android.permission.I2C_PORT"
+        android:protectionLevel="signature|privileged" />
 
     <!-- Allows the holder to access content providers from outside an ApplicationThread.
          This permission is enforced by the ActivityManagerService on the corresponding APIs,

@@ -1259,6 +1259,8 @@ android.hardware.SensorEventListener
 android.hardware.SensorManager
 android.hardware.SerialManager
 android.hardware.SerialPort
+android.hardware.I2CManager
+android.hardware.I2CDevice
 android.hardware.SystemSensorManager
 android.hardware.SystemSensorManager$BaseEventQueue
 android.hardware.SystemSensorManager$SensorEventQueue

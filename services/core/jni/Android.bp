@@ -36,6 +36,7 @@ cc_library_static {
         "com_android_server_net_NetworkStatsService.cpp",
         "com_android_server_power_PowerManagerService.cpp",
         "com_android_server_SerialService.cpp",
+        "com_android_server_I2CService.cpp",
         "com_android_server_storage_AppFuseBridge.cpp",
         "com_android_server_SystemServer.cpp",
         "com_android_server_tv_TvUinputBridge.cpp",

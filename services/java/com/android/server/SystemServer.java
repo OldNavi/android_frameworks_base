@@ -735,6 +735,7 @@ public final class SystemServer {
         NsdService serviceDiscovery= null;
         WindowManagerService wm = null;
         SerialService serial = null;
+        I2CService i2c = null;
         NetworkTimeUpdateService networkTimeUpdater = null;
         CommonTimeManagementService commonTimeMgmtService = null;
         InputManagerService inputManager = null;
@@ -1314,6 +1315,17 @@ public final class SystemServer {
                     ServiceManager.addService(Context.SERIAL_SERVICE, serial);
                 } catch (Throwable e) {
                     Slog.e(TAG, "Failure starting SerialService", e);
+                }
+                traceEnd();
+            }
+            if (!isWatch) {
+                traceBeginAndSlog("StartI2CService");
+                try {
+                    // I2C port support
+                    i2c = new I2CService(context);
+                    ServiceManager.addService(Context.I2C_SERVICE, i2c);
+                } catch (Throwable e) {
+                    Slog.e(TAG, "Failure starting I2CService", e);
                 }
                 traceEnd();
             }
