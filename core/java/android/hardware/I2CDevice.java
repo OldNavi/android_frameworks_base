@@ -120,9 +120,9 @@ public class I2CDevice {
     private native void native_open(FileDescriptor pfd, int addr) throws IOException;
     private native void native_close();
     private native int native_read_array(byte[] buffer, int length) throws IOException;
-    private native int native_set_timeout(int timeout) throws IOException; // Timeout in ms * 10
-    private native int native_set_retries(int retries) throws IOException; // number of retries
     private native int native_read_direct(ByteBuffer buffer, int length) throws IOException;
     private native void native_write_array(byte[] buffer, int length) throws IOException;
     private native void native_write_direct(ByteBuffer buffer, int length) throws IOException;
+    private native void native_set_timeout(int timeout) throws IOException; // Timeout in ms * 10
+    private native void native_set_retries(int retries) throws IOException; // number of retries
 }
