@@ -2588,6 +2588,8 @@ Landroid/hardware/I2CDevice;->mNativeContext:I
 Landroid/hardware/I2CDevice;->write(Ljava/nio/ByteBuffer;I)V
 Landroid/hardware/I2CDevice;->open(Landroid/os/ParcelFileDescriptor;I)V
 Landroid/hardware/I2CDevice;->read(Ljava/nio/ByteBuffer;)I
+Landroid/hardware/I2CDevice;->setTimeout(I)V
+Landroid/hardware/I2CDevice;->setRetries(I)V
 Landroid/hardware/soundtrigger/SoundTrigger$ConfidenceLevel;-><init>(II)V
 Landroid/hardware/soundtrigger/SoundTrigger$ConfidenceLevel;->confidenceLevel:I
 Landroid/hardware/soundtrigger/SoundTrigger$ConfidenceLevel;->userId:I

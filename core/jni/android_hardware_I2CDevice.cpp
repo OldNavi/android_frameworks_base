@@ -26,6 +26,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <errno.h>
 #include <linux/i2c-dev.h>
 
 using namespace android;
@@ -73,7 +74,7 @@ android_hardware_I2CDevice_read_array(JNIEnv *env, jobject thiz, jbyteArray buff
 
     free(buf);
     if (ret < 0)
-        jniThrowException(env, "java/io/IOException", NULL);
+        jniThrowException(env, "java/io/IOException", strerror(errno));
     return ret;
 }
 
@@ -90,7 +91,7 @@ android_hardware_I2CDevice_read_direct(JNIEnv *env, jobject thiz, jobject buffer
 
     int ret = read(fd, buf, length);
     if (ret < 0)
-        jniThrowException(env, "java/io/IOException", NULL);
+        jniThrowException(env, "java/io/IOException", strerror(errno));
     return ret;
 }
 
@@ -108,7 +109,7 @@ android_hardware_I2CDevice_write_array(JNIEnv *env, jobject thiz, jbyteArray buf
     jint ret = write(fd, buf, length);
     free(buf);
     if (ret < 0)
-        jniThrowException(env, "java/io/IOException", NULL);
+        jniThrowException(env, "java/io/IOException", strerror(errno));
 }
 
 static void
@@ -123,10 +124,24 @@ android_hardware_I2CDevice_write_direct(JNIEnv *env, jobject thiz, jobject buffe
     }
     int ret = write(fd, buf, length);
     if (ret < 0)
-        jniThrowException(env, "java/io/IOException", NULL);
+        jniThrowException(env, "java/io/IOException", strerror(errno));
 }
 
+static void
+android_hardware_I2CDevice_set_timeout(JNIEnv *env, jobject thiz, jint timeout)
+{
+    int fd = env->GetIntField(thiz, field_context);
+        if (ioctl(fd,  I2C_TIMEOUT, timeout) < 0)
+            jniThrowException(env, "java/io/IOException", "Could not open set I2C Timeout");
+}
 
+static void
+android_hardware_I2CDevice_set_retries(JNIEnv *env, jobject thiz, jint retries)
+{
+    int fd = env->GetIntField(thiz, field_context);
+        if (ioctl(fd,  I2C_RETRIES, retries) < 0)
+            jniThrowException(env, "java/io/IOException", "Could not open set I2C number of retries");
+}
 static const JNINativeMethod method_table[] = {
     {"native_open",             "(Ljava/io/FileDescriptor;I)V",
                                         (void *)android_hardware_I2CDevice_open},
@@ -139,6 +154,10 @@ static const JNINativeMethod method_table[] = {
                                         (void *)android_hardware_I2CDevice_write_array},
     {"native_write_direct",     "(Ljava/nio/ByteBuffer;I)V",
                                         (void *)android_hardware_I2CDevice_write_direct},
+    {"native_set_timeout",     "(I)V",
+                                        (void *)android_hardware_I2CDevice_set_timeout},
+    {"native_set_retries",     "(I)V",
+                                        (void *)android_hardware_I2CDevice_set_retries},
 };
 
 int register_android_hardware_I2CDevice(JNIEnv *env)
