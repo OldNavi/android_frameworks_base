@@ -2585,7 +2585,9 @@ Landroid/hardware/I2CManager;->getI2CDevices()[Ljava/lang/String;
 Landroid/hardware/I2CManager;->openI2CDevice(Ljava/lang/String;I)Landroid/hardware/I2CDevice;
 Landroid/hardware/I2CDevice;->close()V
 Landroid/hardware/I2CDevice;->mNativeContext:I
+Landroid/hardware/I2CDevice;->mAddr:I
 Landroid/hardware/I2CDevice;->write(Ljava/nio/ByteBuffer;I)V
+Landroid/hardware/I2CDevice;->writeRead(Ljava/nio/ByteBuffer;I;Ljava/nio/ByteBuffer;I)V
 Landroid/hardware/I2CDevice;->open(Landroid/os/ParcelFileDescriptor;I)V
 Landroid/hardware/I2CDevice;->read(Ljava/nio/ByteBuffer;)I
 Landroid/hardware/I2CDevice;->setTimeout(I)V

@@ -32,6 +32,7 @@ public class I2CDevice {
 
     // used by the JNI code
     private int mNativeContext;
+    private int mAddr;
     private final String mName;
     private ParcelFileDescriptor mFileDescriptor;
 
@@ -108,6 +109,23 @@ public class I2CDevice {
             throw new IllegalArgumentException("buffer is not direct and has no array");
         }
     }
+    /**
+     * Writes and reads data from provided buffers in single I2C transactio.
+     * Note that the value returned by {@link java.nio.Buffer#position()} on this buffer is
+     * unchanged after a call to this method.
+     *
+     * @param bufferIn to write
+     * @param lengthIn number of bytes to write
+     * @param bufferOut to read
+     * @param lengthOut number of bytes to read
+     */
+    public void writeRead(ByteBuffer bufferIn, int lengthIn,ByteBuffer bufferOut, int lengthOut) throws IOException {
+        if (bufferIn.isDirect() && bufferOut.isDirect()) {
+            native_write_read_direct(bufferIn, lengthIn, bufferOut, lengthOut);
+        } else {
+            throw new IllegalArgumentException("buffers are not direct");
+        }
+    }
 
     public void setTimeout(int timeout) throws IOException {
         native_set_timeout(timeout);
@@ -125,4 +143,6 @@ public class I2CDevice {
     private native void native_write_direct(ByteBuffer buffer, int length) throws IOException;
     private native void native_set_timeout(int timeout) throws IOException; // Timeout in ms * 10
     private native void native_set_retries(int retries) throws IOException; // number of retries
+    private native int native_write_read_direct(ByteBuffer bufferIn, int lengthIn,ByteBuffer bufferOut, int lengthOut) throws IOException;
+
 }
