@@ -143,6 +143,6 @@ public class I2CDevice {
     private native void native_write_direct(ByteBuffer buffer, int length) throws IOException;
     private native void native_set_timeout(int timeout) throws IOException; // Timeout in ms * 10
     private native void native_set_retries(int retries) throws IOException; // number of retries
-    private native int native_write_read_direct(ByteBuffer bufferIn, int lengthIn,ByteBuffer bufferOut, int lengthOut) throws IOException;
+    private native void native_write_read_direct(ByteBuffer bufferIn, int lengthIn,ByteBuffer bufferOut, int lengthOut) throws IOException;
 
 }

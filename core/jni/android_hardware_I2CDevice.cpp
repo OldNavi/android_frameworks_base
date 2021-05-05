@@ -213,7 +213,7 @@ static const JNINativeMethod method_table[] = {
                                         (void *)android_hardware_I2CDevice_set_timeout},
     {"native_set_retries",     "(I)V",
                                         (void *)android_hardware_I2CDevice_set_retries},
-    {"native_write_read_direct",      "(Ljava/nio/ByteBuffer;I;Ljava/nio/ByteBuffer;I)V",
+    {"native_write_read_direct",      "(Ljava/nio/ByteBuffer;ILjava/nio/ByteBuffer;I)V",
                                         (void *)android_hardware_I2CDevice_write_read_direct},
 };
 
