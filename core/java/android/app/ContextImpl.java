@@ -119,6 +119,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Executor;
+import android.app.compat.AndroidAutoHelper;
 
 class ReceiverRestrictedContext extends ContextWrapper {
     @UnsupportedAppUsage
@@ -2224,6 +2225,10 @@ class ContextImpl extends Context {
         if (mParams.isRenouncedPermission(permission)) {
             Log.v(TAG, "Treating renounced permission " + permission + " as denied");
             return PERMISSION_DENIED;
+        }
+
+        if (AndroidAutoHelper.shouldSpoofSelfPermissionCheck(permission)) {
+            return PERMISSION_GRANTED;
         }
 
         return checkPermission(permission, Process.myPid(), Process.myUid());

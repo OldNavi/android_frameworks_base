@@ -17,6 +17,7 @@
 package com.android.server.display;
 
 import android.annotation.NonNull;
+import android.app.compat.AndroidAutoHelper;
 import android.os.Trace;
 import android.util.Slog;
 import android.view.Display;
@@ -156,6 +157,7 @@ class DisplayDeviceRepository implements DisplayAdapter.Listener {
 
             mDisplayDevices.add(device);
             sendEventLocked(device, DISPLAY_DEVICE_EVENT_ADDED);
+            AndroidAutoHelper.handleDisplayAdded(info.name, info.ownerUid);
         }
     }
 
@@ -205,6 +207,7 @@ class DisplayDeviceRepository implements DisplayAdapter.Listener {
             Slog.i(TAG, "Display device removed: " + info);
             device.mDebugLastLoggedDeviceInfo = info;
             sendEventLocked(device, DISPLAY_DEVICE_EVENT_REMOVED);
+            AndroidAutoHelper.handleDisplayRemoved(info.name, info.ownerUid);
         }
     }
 

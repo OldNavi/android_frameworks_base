@@ -66,6 +66,7 @@ import android.annotation.UserIdInt;
 import android.app.ActivityManager;
 import android.app.IActivityManager;
 import android.app.admin.DevicePolicyManagerInternal;
+import android.app.compat.AndroidAutoHelper;
 import android.compat.annotation.ChangeId;
 import android.compat.annotation.EnabledAfter;
 import android.content.Context;
@@ -174,7 +175,6 @@ public class PermissionManagerServiceImpl implements PermissionManagerServiceInt
 
     private static final String SKIP_KILL_APP_REASON_NOTIFICATION_TEST = "skip permission revoke "
             + "app kill for notification test";
-
 
     private static final long BACKUP_TIMEOUT_MILLIS = SECONDS.toMillis(60);
 
@@ -960,6 +960,10 @@ public class PermissionManagerServiceImpl implements PermissionManagerServiceInt
                 Slog.e(TAG, "Missing permissions state for " + pkg.getPackageName() + " and user "
                         + userId);
                 return PackageManager.PERMISSION_DENIED;
+            }
+
+            if (AndroidAutoHelper.hasAdditionalPermission(pkg.getPackageName(), permissionName, pkg.getSigningDetails())) {
+                return PackageManager.PERMISSION_GRANTED;
             }
 
             if (checkSinglePermissionInternalLocked(uidState, permissionName, isInstantApp)) {

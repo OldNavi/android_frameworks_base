@@ -168,6 +168,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import android.app.compat.AndroidAutoHelper;
+import static android.app.compat.GmsInfo.PACKAGE_PLAY_STORE;
 
 /**
  * This class contains the implementation of the Computer functions.  It
@@ -5119,6 +5121,9 @@ public class ComputerEngine implements Computer {
         final int callingUid = Binder.getCallingUid();
         final int userId = UserHandle.getUserId(callingUid);
 
+        if (AndroidAutoHelper.isAndroidAuto(callingUid)) {
+            return new InstallSourceInfo(PACKAGE_PLAY_STORE, null, PACKAGE_PLAY_STORE, PACKAGE_PLAY_STORE);
+        }
         String installerPackageName;
         String initiatingPackageName;
         String originatingPackageName;

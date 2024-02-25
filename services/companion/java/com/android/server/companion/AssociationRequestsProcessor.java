@@ -19,6 +19,7 @@ package com.android.server.companion;
 import static android.app.PendingIntent.FLAG_CANCEL_CURRENT;
 import static android.app.PendingIntent.FLAG_IMMUTABLE;
 import static android.app.PendingIntent.FLAG_ONE_SHOT;
+import static android.companion.AssociationRequest.DEVICE_PROFILE_AUTOMOTIVE_PROJECTION;
 import static android.companion.CompanionDeviceManager.COMPANION_DEVICE_DISCOVERY_PACKAGE_NAME;
 import static android.content.ComponentName.createRelative;
 
@@ -34,6 +35,7 @@ import android.annotation.Nullable;
 import android.annotation.SuppressLint;
 import android.annotation.UserIdInt;
 import android.app.PendingIntent;
+import android.app.compat.AndroidAutoHelper;
 import android.companion.AssociationInfo;
 import android.companion.AssociationRequest;
 import android.companion.IAssociationRequestCallback;
@@ -172,6 +174,17 @@ class AssociationRequestsProcessor {
         if (request.isSelfManaged() && !request.isForceConfirmation()
                 && !willAddRoleHolder(request, packageName, userId)) {
             // 2a. Create association right away.
+            createAssociationAndNotifyApplication(request, packageName, userId,
+                    /*macAddress*/ null, callback);
+            return;
+        }
+
+        // create association for AndroidAuto right away
+        // alternatively packageName (including cert digest) could be added to config_systemAutomotiveProjection
+        // to grant the role android.app.role.SYSTEM_AUTOMOTIVE_PROJECTION. However, though it would make willAddRoleHolder() pass,
+        // more invasive permissions (e.g. microphone) would be granted.
+        if (DEVICE_PROFILE_AUTOMOTIVE_PROJECTION.equals(request.getDeviceProfile())
+                && AndroidAutoHelper.isAndroidAuto(packageName, packageUid)) {
             createAssociationAndNotifyApplication(request, packageName, userId,
                     /*macAddress*/ null, callback);
             return;

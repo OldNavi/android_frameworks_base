@@ -36,6 +36,7 @@ import android.Manifest;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.annotation.UserIdInt;
+import android.app.compat.AndroidAutoHelper;
 import android.companion.AssociationInfo;
 import android.companion.AssociationRequest;
 import android.companion.CompanionDeviceManager;
@@ -165,6 +166,9 @@ final class PermissionsUtils {
             @UserIdInt int userId, @NonNull String packageName,
             @Nullable String actionDescription) {
         if (checkCallerCanManageAssociationsForPackage(context, userId, packageName)) return;
+
+        // Allow AndroidAuto to manage it's associations
+        if (userId == 0 && AndroidAutoHelper.isAndroidAuto(packageName, getCallingUid())) return;
 
         throw new SecurityException("Caller (uid=" + getCallingUid() + ") does not have "
                 + "permissions to "

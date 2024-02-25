@@ -22,6 +22,7 @@ import static android.view.WindowManagerPolicyConstants.APPLICATION_PANEL_SUBLAY
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
+import android.app.compat.AndroidAutoHelper;
 import android.compat.annotation.UnsupportedAppUsage;
 import android.content.Context;
 import android.content.res.CompatibilityInfo.Translator;
@@ -688,7 +689,7 @@ public class SurfaceView extends View implements ViewRootImpl.SurfaceChangedCall
      * @param isSecure True if the surface view is secure.
      */
     public void setSecure(boolean isSecure) {
-        if (isSecure) {
+        if (isSecure && !AndroidAutoHelper.isMediaAppContext()) {
             mSurfaceFlags |= SurfaceControl.SECURE;
         } else {
             mSurfaceFlags &= ~SurfaceControl.SECURE;
