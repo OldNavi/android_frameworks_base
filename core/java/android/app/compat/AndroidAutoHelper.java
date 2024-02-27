@@ -45,16 +45,18 @@ import java.util.Set;
  * @hide
  */
 public final class AndroidAutoHelper {
+    static final String TAG = "AndroidAutoHelper";
     private static final String PACKAGE_ANDROIDAUTO = "com.google.android.projection.gearhead";
     private static final Set<String> SIGNATURES_ANDROIDAUTO = new ArraySet<>(
             Arrays.asList(
                     "FDB00C43DBDE8B51CB312AA81D3B5FA17713ADB94B28F598D77F8EB89DACEEDF" // CN=gearhead, OU=Android, O=Google Inc., L=Mountain View, ST=California, C=US
             )
     );
-    private static final String PACKAGE_SCREEN2AUTO = "new.package.name.s2a"; // replace with new package name of Screen2Auto
+    private static final String PACKAGE_SCREEN2AUTO = "me.aap.fermata.auto.dear.google.why"; // replace with new package name of Screen2Auto
     private static final Set<String> SIGNATURES_SCREEN2AUTO = new ArraySet<>(
             Arrays.asList(
-                    "0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF" // replace with sha256 hash of signing certificate
+		    "ABA44DDC4EF0E8F162542B0A0065F7C8C97F9B36B51318E02B14842958CA6CC4", // replace with sha256 hash of signing certificate
+		    "8F81BDFC093C80B080644FD28B0B0A45DDB9B16CE81FE5200DAD696B33BC7B00"
             )
     );
     private static final List<String> PACKAGES_MEDIAAPPS = Arrays.asList(
@@ -63,7 +65,10 @@ public final class AndroidAutoHelper {
             "com.disney.disneyplus",
             "com.spotify.music",
 	    "com.google.android.youtube",
-	    "org.videolan.vlc"
+	    "ru.kinopoisk",
+	    "ru.ivi.client",
+	    "org.videolan.vlc",
+	    "me.aap.fermata.auto.dear.google.why"
     );
 
     private static boolean androidAutoActive = false;
@@ -108,6 +113,12 @@ public final class AndroidAutoHelper {
             Arrays.asList(
                     "android.permission.SYSTEM_APPLICATION_OVERLAY" // display over other apps
             )
+    );   
+    private static final ArrayList<String> DISPLAYS_SCREEN2AUTO = new ArrayList<String>(
+            Arrays.asList(
+                    "Fermata Mirror", // display over other apps
+		    "CarAppService"
+            )
     );
 
     private static boolean isAndroidAuto = false;
@@ -147,7 +158,7 @@ public final class AndroidAutoHelper {
     private static boolean validateCertDigests(Signature[] signatures, Set<String> validSignatureDigests) throws NoSuchAlgorithmException {
         for (Signature signature : signatures) {
             String signatureDigest = PackageUtils.computeSha256Digest(signature.toByteArray());
-
+	    Log.i(TAG,"Checking signature "+signature);
             if (validSignatureDigests.contains(signatureDigest)) {
                 return true;
             }
@@ -158,6 +169,7 @@ public final class AndroidAutoHelper {
     private static boolean packageMatchesSignatureDigests(String packageName, Set<String> validSignatureDigests) {
         IPackageManager pm = ActivityThread.getPackageManager();
         try {
+	    Log.i(TAG,"For package "+packageName);
             PackageInfo pkg = pm.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES, 0);
             SigningInfo si = pkg.signingInfo;
             Signature[] signatures = si.getApkContentsSigners();
@@ -314,10 +326,11 @@ public final class AndroidAutoHelper {
 
     private static void handleDisplayChanged(String name, int ownerUid, boolean added)
     {
+	Log.i(TAG,"Checking a new display created: "+name);
         if (name.equals("Dashboard") && isAndroidAuto(ownerUid)) {
             androidAutoActive = added;
         }
-        if (name.equals("ScreenCapture") && isScreen2Auto(ownerUid)) {
+        if (DISPLAYS_SCREEN2AUTO.contains(name) && isScreen2Auto(ownerUid)) {
             setScreenCaptureActive(added);
         }
     }
@@ -338,7 +351,7 @@ public final class AndroidAutoHelper {
     private static void setScreenCaptureActive(boolean screenCaptureActiveStatus) {
         screenCaptureActive = screenCaptureActiveStatus;
 
-        String accessibilityService = PACKAGE_SCREEN2AUTO + "/ru.inceptive.screentwoauto.services.SplitScreenService";
+        String accessibilityService = PACKAGE_SCREEN2AUTO + "/me.aap.fermata.auto.AccessibilityEventDispatcherService";
 
         int accessibilityEnabled = 0;
 
